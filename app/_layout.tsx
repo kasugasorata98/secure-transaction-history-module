@@ -1,25 +1,39 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { RootSiblingParent } from "react-native-root-siblings";
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
+import { Button } from "react-native";
+import { TransactionProvider } from "@/context/TransactionContext";
+import { AUTHENTICATED_USER } from "@/constants/AsyncStorageKeys";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
+  const { getItem } = useAsyncStorage(AUTHENTICATED_USER);
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      getItem()
+        .then((authenticatedUser) => {
+          if (authenticatedUser) {
+            router.replace({
+              pathname: "/login",
+              params: {
+                isAuthenticated: "TRUE",
+              },
+            });
+          }
+        })
+        .finally(() => SplashScreen.hideAsync());
     }
   }, [loaded]);
 
@@ -27,9 +41,46 @@ export default function RootLayout() {
     return null;
   }
 
+  async function logout() {
+    await AsyncStorage.removeItem(AUTHENTICATED_USER);
+    router.replace("/");
+  }
+
   return (
     <ThemeProvider value={DefaultTheme}>
-      <Stack></Stack>
+      <RootSiblingParent>
+        <TransactionProvider>
+          <Stack>
+            <Stack.Screen
+              name="index"
+              options={{ headerShown: false, title: "Welcome" }}
+            />
+            <Stack.Screen
+              name="login"
+              options={{ headerShown: true, title: "Login" }}
+            />
+            <Stack.Screen
+              name="register"
+              options={{ headerShown: true, title: "Register" }}
+            />
+            <Stack.Screen
+              name="transaction-history"
+              options={{
+                headerShown: true,
+                headerBackVisible: false,
+                title: "Transaction History",
+                headerRight: () => {
+                  return <Button title="Logout" onPress={logout} />;
+                },
+              }}
+            />
+            <Stack.Screen
+              name="transaction-details"
+              options={{ headerShown: true, title: "Transaction Details" }}
+            />
+          </Stack>
+        </TransactionProvider>
+      </RootSiblingParent>
     </ThemeProvider>
   );
 }
