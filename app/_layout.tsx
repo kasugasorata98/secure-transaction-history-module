@@ -12,6 +12,13 @@ import { Button } from "react-native";
 import { TransactionProvider } from "@/context/TransactionContext";
 import { AUTHENTICATED_USER } from "@/constants/AsyncStorageKeys";
 
+import { LogBox } from "react-native";
+
+// Ignore specific warnings
+LogBox.ignoreLogs([
+  "Using Math.random is not cryptographically secure! Use bcrypt.setRandomFallback to set a PRNG.",
+]);
+
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {

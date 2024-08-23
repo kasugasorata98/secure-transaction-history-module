@@ -15,6 +15,7 @@ import Toast from "react-native-root-toast";
 export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   function isFieldDateValid() {
     if (!(email && password)) {
@@ -36,7 +37,7 @@ export default function RegisterScreen() {
 
   function onConfirm() {
     if (!isFieldDateValid()) return;
-
+    setIsLoading(true);
     AsyncStorage.getItem(REGISTERED_USER_CREDS)
       .then((stringJson) => {
         if (stringJson) {
@@ -62,8 +63,12 @@ export default function RegisterScreen() {
         await AsyncStorage.setItem(AUTHENTICATED_USER, email);
 
         router.replace("/transaction-history");
-      });
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
   }
+
+  if (isLoading) return <Text>Loading...</Text>;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

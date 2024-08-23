@@ -17,6 +17,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { authenticate } = useBiometricAuthentication();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAuthentication = async () => {
     const result = await authenticate();
@@ -41,6 +42,8 @@ export default function LoginScreen() {
       handleAuthentication();
     }
   }, []);
+
+  if (isLoading) return <Text>Loading...</Text>;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -75,6 +78,7 @@ export default function LoginScreen() {
               });
               return;
             }
+            setIsLoading(true);
             AsyncStorage.getItem(REGISTERED_USER_CREDS)
               .then((stringJson) => {
                 if (stringJson) {
@@ -108,7 +112,9 @@ export default function LoginScreen() {
                     }
                   }
                 }
-              );
+              )
+              .catch((err) => console.log(err))
+              .finally(() => setIsLoading(false));
           }}
           title="Confirm"
         />
