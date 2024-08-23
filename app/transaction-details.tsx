@@ -42,7 +42,7 @@ export default function TransactionDetailsScreen() {
         <Text>Date</Text>
         <Text>{transaction.date.toDateString()}</Text>
       </View>
-      <View style={styles.data}>
+      <View>
         <Text>Description</Text>
         <Text>{transaction.description}</Text>
       </View>
