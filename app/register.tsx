@@ -47,12 +47,12 @@ export default function RegisterScreen() {
         if (!data) {
           await AsyncStorage.setItem(
             REGISTERED_USER_CREDS,
-            JSON.stringify([{ email, password: await hashPassword(password) }])
+            JSON.stringify([{ email, password: hashPassword(password) }])
           );
         } else {
           data.push({
             email,
-            password: await hashPassword(password),
+            password: hashPassword(password),
           });
           await AsyncStorage.setItem(
             REGISTERED_USER_CREDS,
@@ -61,9 +61,7 @@ export default function RegisterScreen() {
         }
         await AsyncStorage.setItem(AUTHENTICATED_USER, email);
 
-        setTimeout(async () => {
-          router.replace("/transaction-history");
-        }, 1000);
+        router.replace("/transaction-history");
       });
   }
 

@@ -1,15 +1,14 @@
-import bcrypt from "bcrypt";
+import bcrypt from "react-native-bcrypt";
 
-export const hashPassword = async (password: string) => {
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+export const hashPassword = (password: string) => {
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
   return hashedPassword;
 };
 
-export const verifyPassword = async (
+export const verifyPassword = (
   enteredPassword: string,
   storedHashedPassword: string
 ) => {
-  const isMatch = await bcrypt.compare(enteredPassword, storedHashedPassword);
-  return isMatch;
+  return bcrypt.compareSync(enteredPassword, storedHashedPassword);
 };

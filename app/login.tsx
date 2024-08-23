@@ -96,7 +96,7 @@ export default function LoginScreen() {
                     );
                     if (
                       credential &&
-                      (await verifyPassword(password, credential.password))
+                      verifyPassword(password, credential.password)
                     ) {
                       await AsyncStorage.setItem(AUTHENTICATED_USER, email);
                       router.push("/transaction-history");
