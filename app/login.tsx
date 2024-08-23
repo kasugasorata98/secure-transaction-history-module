@@ -10,6 +10,7 @@ import {
   AUTHENTICATED_USER,
   REGISTERED_USER_CREDS,
 } from "@/constants/AsyncStorageKeys";
+import { verifyPassword } from "@/utils/bcryptUtils";
 
 export default function LoginScreen() {
   const params = useLocalSearchParams();
@@ -91,18 +92,19 @@ export default function LoginScreen() {
                     });
                   } else {
                     const credential = credentials.find(
-                      (credential) =>
-                        credential.email === email &&
-                        credential.password === password
+                      (credential) => credential.email === email
                     );
-                    if (!credential) {
+                    if (
+                      credential &&
+                      (await verifyPassword(password, credential.password))
+                    ) {
+                      await AsyncStorage.setItem(AUTHENTICATED_USER, email);
+                      router.push("/transaction-history");
+                    } else {
                       Toast.show("Invalid email or password", {
                         duration: Toast.durations.LONG,
                         position: Toast.positions.CENTER,
                       });
-                    } else {
-                      await AsyncStorage.setItem(AUTHENTICATED_USER, email);
-                      router.push("/transaction-history");
                     }
                   }
                 }

@@ -4,6 +4,7 @@ import {
   REGISTERED_USER_CREDS,
 } from "@/constants/AsyncStorageKeys";
 import { Colors } from "@/constants/Colors";
+import { hashPassword } from "@/utils/bcryptUtils";
 import { isValidEmail } from "@/utils/validationUtils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
@@ -46,12 +47,12 @@ export default function RegisterScreen() {
         if (!data) {
           await AsyncStorage.setItem(
             REGISTERED_USER_CREDS,
-            JSON.stringify([{ email, password }])
+            JSON.stringify([{ email, password: await hashPassword(password) }])
           );
         } else {
           data.push({
             email,
-            password,
+            password: await hashPassword(password),
           });
           await AsyncStorage.setItem(
             REGISTERED_USER_CREDS,
