@@ -17,7 +17,7 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  function isFieldDateValid() {
+  function isFieldDataValid() {
     if (!(email && password)) {
       Toast.show("Make sure that email and password is entered", {
         duration: Toast.durations.LONG,
@@ -36,7 +36,7 @@ export default function RegisterScreen() {
   }
 
   function onConfirm() {
-    if (!isFieldDateValid()) return;
+    if (!isFieldDataValid()) return;
     setIsLoading(true);
     AsyncStorage.getItem(REGISTERED_USER_CREDS)
       .then((stringJson) => {
