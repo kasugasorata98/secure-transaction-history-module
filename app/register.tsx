@@ -11,11 +11,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, TextInput, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import Toast from "react-native-root-toast";
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   function isFieldDataValid() {
@@ -92,12 +94,21 @@ export default function RegisterScreen() {
         </View>
         <View>
           <Text>Password</Text>
-          <TextInput
-            onChangeText={(text) => setPassword(text)}
-            style={styles.input}
-            placeholder="password"
-            secureTextEntry={true}
-          />
+          <View style={styles.textInputContainer}>
+            <TextInput
+              onChangeText={(text) => setPassword(text)}
+              style={styles.input}
+              placeholder="password"
+              secureTextEntry={!showPassword}
+            />
+            <MaterialIcons
+              style={styles.icon}
+              name={showPassword ? "visibility-off" : "visibility"}
+              size={24}
+              color={Colors.DARK_GRAY}
+              onPress={() => setShowPassword(!showPassword)}
+            />
+          </View>
         </View>
       </View>
       <View style={styles.buttonContainer}>
@@ -135,5 +146,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: 100,
+  },
+  textInputContainer: {
+    justifyContent: "center",
+  },
+  icon: {
+    position: "absolute",
+    paddingTop: 5,
+    right: 0,
+    marginRight: 10,
   },
 });

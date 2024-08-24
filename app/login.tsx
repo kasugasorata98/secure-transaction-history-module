@@ -12,6 +12,7 @@ import {
 } from "@/constants/AsyncStorageKeys";
 import { verifyPassword } from "@/utils/bcryptUtils";
 import Button from "@/components/Button";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function LoginScreen() {
   const params = useLocalSearchParams();
@@ -19,6 +20,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const { authenticate } = useBiometricAuthentication();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleAuthentication = async () => {
     const result = await authenticate();
@@ -61,12 +63,21 @@ export default function LoginScreen() {
         </View>
         <View>
           <Text>Password</Text>
-          <TextInput
-            onChangeText={(text) => setPassword(text)}
-            style={styles.input}
-            placeholder="password"
-            secureTextEntry={true}
-          />
+          <View style={styles.textInputContainer}>
+            <TextInput
+              onChangeText={(text) => setPassword(text)}
+              style={styles.input}
+              placeholder="password"
+              secureTextEntry={!showPassword}
+            />
+            <MaterialIcons
+              style={styles.icon}
+              name={showPassword ? "visibility-off" : "visibility"}
+              size={24}
+              color={Colors.DARK_GRAY}
+              onPress={() => setShowPassword(!showPassword)}
+            />
+          </View>
         </View>
       </View>
       <View style={styles.buttonContainer}>
@@ -152,5 +163,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: 100,
+  },
+  textInputContainer: {
+    justifyContent: "center",
+  },
+  icon: {
+    position: "absolute",
+    paddingTop: 5,
+    right: 0,
+    marginRight: 10,
   },
 });
