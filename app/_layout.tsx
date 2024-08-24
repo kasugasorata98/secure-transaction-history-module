@@ -40,6 +40,7 @@ export default function RootLayout() {
             });
           }
         })
+        .catch((err) => console.log(err))
         .finally(() => SplashScreen.hideAsync());
     }
   }, [loaded]);

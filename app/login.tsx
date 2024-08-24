@@ -40,6 +40,46 @@ export default function LoginScreen() {
     }
   };
 
+  const onConfirm = async () => {
+    if (!(email && password)) {
+      Toast.show("Make sure that email and password is enterered", {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.CENTER,
+      });
+      return;
+    }
+    setIsLoading(true);
+    AsyncStorage.getItem(REGISTERED_USER_CREDS)
+      .then((stringJson) => {
+        if (stringJson) {
+          return JSON.parse(stringJson);
+        }
+      })
+      .then(async (credentials: Array<{ email: string; password: string }>) => {
+        if (!credentials) {
+          Toast.show("Please register first", {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+        } else {
+          const credential = credentials.find(
+            (credential) => credential.email === email
+          );
+          if (credential && verifyPassword(password, credential.password)) {
+            await AsyncStorage.setItem(AUTHENTICATED_USER, email);
+            router.push("/transaction-history");
+          } else {
+            Toast.show("Invalid email or password", {
+              duration: Toast.durations.LONG,
+              position: Toast.positions.CENTER,
+            });
+          }
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  };
+
   useEffect(() => {
     if (params.isAuthenticated === "TRUE") {
       handleAuthentication();
@@ -81,55 +121,7 @@ export default function LoginScreen() {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <Button
-          style={styles.button}
-          onPress={async () => {
-            if (!(email && password)) {
-              Toast.show("Make sure that email and password is enterered", {
-                duration: Toast.durations.LONG,
-                position: Toast.positions.CENTER,
-              });
-              return;
-            }
-            setIsLoading(true);
-            AsyncStorage.getItem(REGISTERED_USER_CREDS)
-              .then((stringJson) => {
-                if (stringJson) {
-                  return JSON.parse(stringJson);
-                }
-              })
-              .then(
-                async (
-                  credentials: Array<{ email: string; password: string }>
-                ) => {
-                  if (!credentials) {
-                    Toast.show("Please register first", {
-                      duration: Toast.durations.LONG,
-                      position: Toast.positions.CENTER,
-                    });
-                  } else {
-                    const credential = credentials.find(
-                      (credential) => credential.email === email
-                    );
-                    if (
-                      credential &&
-                      verifyPassword(password, credential.password)
-                    ) {
-                      await AsyncStorage.setItem(AUTHENTICATED_USER, email);
-                      router.push("/transaction-history");
-                    } else {
-                      Toast.show("Invalid email or password", {
-                        duration: Toast.durations.LONG,
-                        position: Toast.positions.CENTER,
-                      });
-                    }
-                  }
-                }
-              )
-              .catch((err) => console.log(err))
-              .finally(() => setIsLoading(false));
-          }}
-        >
+        <Button style={styles.button} onPress={onConfirm}>
           <Text>Confirm</Text>
         </Button>
       </View>
