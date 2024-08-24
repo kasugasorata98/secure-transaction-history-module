@@ -35,7 +35,7 @@ const TransactionItem = memo(
 
 const styles = StyleSheet.create({
   transactionHistoryItem: {
-    marginBottom: 10,
+    marginBottom: 20,
     borderWidth: 1,
     padding: 10,
     borderRadius: 12,
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   transactionHistoryHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
+    marginBottom: 15,
   },
   flatlist: {
     paddingTop: 10,

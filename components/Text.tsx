@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
-import { Text as RNText, StyleSheet, TextStyle } from "react-native";
+import { Text as RNText, StyleSheet, TextProps } from "react-native";
 
-export default function Text(props: {
-  children: ReactNode;
-  style?: TextStyle;
-}) {
-  return <RNText style={[styles.text, props.style]}>{props.children}</RNText>;
+export default function Text({ style, children, ...rest }: TextProps) {
+  return (
+    <RNText {...rest} style={[styles.text, style]}>
+      {children}
+    </RNText>
+  );
 }
 
 const styles = StyleSheet.create({

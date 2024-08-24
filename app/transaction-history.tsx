@@ -101,9 +101,11 @@ export default function TransactionHistoryScreen() {
       ListHeaderComponent={() => {
         return (
           <View style={styles.welcomeBackContainer}>
-            <Text style={styles.welcomeBack}>{`Welcome back, ${
-              email || ""
-            }`}</Text>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              style={styles.welcomeBack}
+            >{`Welcome back, ${email || ""}`}</Text>
             <View style={styles.switchContainer}>
               <Switch
                 onValueChange={async (isCheck) => {
@@ -146,8 +148,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   flatlist: {
-    paddingTop: 10,
-    paddingHorizontal: 10,
+    paddingTop: 20,
+    paddingHorizontal: 20,
   },
   welcomeBack: {
     fontSize: 20,
