@@ -5,13 +5,7 @@ import useBiometricAuthentication from "@/hooks/useBiometricAuthentication";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Switch,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, Switch, View } from "react-native";
 import { faker } from "@faker-js/faker";
 import TransactionItem from "@/components/TransactionItem";
 
