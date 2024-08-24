@@ -2,6 +2,7 @@ import { memo } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Text from "./Text";
 import { Transaction } from "@/app/transaction-history";
+import { Colors } from "@/constants/Colors";
 
 type Prop = {
   item: Transaction;
@@ -36,9 +37,12 @@ const TransactionItem = memo(
 const styles = StyleSheet.create({
   transactionHistoryItem: {
     marginBottom: 20,
-    borderWidth: 1,
+    borderWidth: 0.5,
+    shadowOpacity: 0.2,
+    elevation: 10,
     padding: 10,
     borderRadius: 12,
+    borderColor: Colors.DARK_GRAY,
   },
   date: {
     fontSize: 12,

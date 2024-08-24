@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   welcomeBack: {
-    fontSize: 20,
+    fontSize: 14,
   },
   welcomeBackContainer: {
     marginBottom: 10,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 5,
-    marginTop: 20,
+    marginTop: 10,
   },
   type: {
     fontSize: 12,
