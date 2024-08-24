@@ -3,7 +3,7 @@ import { Colors } from "@/constants/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Button, ScrollView, StyleSheet, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, TextInput, View } from "react-native";
 import Toast from "react-native-root-toast";
 import useBiometricAuthentication from "@/hooks/useBiometricAuthentication";
 import {
@@ -11,6 +11,7 @@ import {
   REGISTERED_USER_CREDS,
 } from "@/constants/AsyncStorageKeys";
 import { verifyPassword } from "@/utils/bcryptUtils";
+import Button from "@/components/Button";
 
 export default function LoginScreen() {
   const params = useLocalSearchParams();
@@ -68,8 +69,9 @@ export default function LoginScreen() {
           />
         </View>
       </View>
-      <View>
+      <View style={styles.buttonContainer}>
         <Button
+          style={styles.button}
           onPress={async () => {
             if (!(email && password)) {
               Toast.show("Make sure that email and password is enterered", {
@@ -116,8 +118,9 @@ export default function LoginScreen() {
               .catch((err) => console.log(err))
               .finally(() => setIsLoading(false));
           }}
-          title="Confirm"
-        />
+        >
+          <Text>Confirm</Text>
+        </Button>
       </View>
     </ScrollView>
   );
@@ -140,5 +143,14 @@ const styles = StyleSheet.create({
   },
   emailContainer: {
     marginBottom: 10,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 100,
   },
 });

@@ -1,3 +1,4 @@
+import Button from "@/components/Button";
 import Text from "@/components/Text";
 import {
   AUTHENTICATED_USER,
@@ -9,7 +10,7 @@ import { isValidEmail } from "@/utils/validationUtils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Button, ScrollView, StyleSheet, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, TextInput, View } from "react-native";
 import Toast from "react-native-root-toast";
 
 export default function RegisterScreen() {
@@ -50,6 +51,12 @@ export default function RegisterScreen() {
             REGISTERED_USER_CREDS,
             JSON.stringify([{ email, password: hashPassword(password) }])
           );
+        } else if (data.find((val) => val.email === email)) {
+          Toast.show("Email is already registered, please login instead.", {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          return;
         } else {
           data.push({
             email,
@@ -93,8 +100,10 @@ export default function RegisterScreen() {
           />
         </View>
       </View>
-      <View>
-        <Button onPress={onConfirm} title="Confirm" />
+      <View style={styles.buttonContainer}>
+        <Button style={styles.button} onPress={onConfirm}>
+          <Text>Confirm</Text>
+        </Button>
       </View>
     </ScrollView>
   );
@@ -117,5 +126,14 @@ const styles = StyleSheet.create({
   },
   emailContainer: {
     marginBottom: 10,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 100,
   },
 });

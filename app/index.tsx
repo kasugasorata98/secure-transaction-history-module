@@ -1,12 +1,7 @@
+import Button from "@/components/Button";
 import Text from "@/components/Text";
 import { router } from "expo-router";
-import {
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 
 export default function WelcomeScreen() {
   function createAnAccount() {
@@ -24,8 +19,12 @@ export default function WelcomeScreen() {
           {`Discover the bank\nthat lives in your pocket`}
         </Text>
         <View style={styles.linkContainer}>
-          <Button title="Create an account" onPress={createAnAccount} />
-          <Button title="Login" onPress={login} />
+          <Button style={styles.buttons} onPress={createAnAccount}>
+            <Text>Create an account</Text>
+          </Button>
+          <Button style={styles.buttons} onPress={login}>
+            <Text>Login</Text>
+          </Button>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -45,6 +44,11 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   linkContainer: {
+    gap: 10,
     alignItems: "center",
+    marginBottom: 24,
+  },
+  buttons: {
+    width: 200,
   },
 });
